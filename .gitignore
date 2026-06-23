@@ -1,0 +1,20 @@
+# python
+__pycache__/
+*.pyc
+.venv/
+
+# build/cache artifacts
+.demoreel/
+
+# rendered output (large binaries)
+*.mp4
+*.webm
+*.srt
+*.vtt
+*.aiff
+*.wav
+*.transcript.md
+*.storyboard.png
+
+# os
+.DS_Store

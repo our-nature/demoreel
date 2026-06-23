@@ -1,0 +1,60 @@
+# demoreel example — a runnable studio-quality walkthrough of the Playwright docs site.
+#
+#   demoreel validate playwright-tour.yaml   # parse + scene plan (fast)
+#   demoreel check    playwright-tour.yaml   # verify selectors resolve (opens the page)
+#   demoreel render   playwright-tour.yaml   # full render
+#   demoreel render   playwright-tour.yaml --preview   # fast low-res iteration
+#
+# Point `url` + selectors at your own app to make a product demo. For an authed app,
+# capture a Playwright storageState once and set `storage_state:` below.
+
+title: "Playwright — a quick tour"
+url: "https://playwright.dev"
+viewport: [1600, 900]          # ~1:1 with the 1080p studio window → crisp
+fps: 30
+output: "playwright-tour.mp4"
+preset: studio                 # studio (default) · dark · light · minimal
+
+camera:   { easing: spring, zoom: 1.6 }
+captions: { style: pill }      # pill · lower_third · karaoke (karaoke needs the `align` extra)
+audio:    { sfx: { enabled: true } }
+voice:    { engine: piper, model: en_US-lessac-medium }
+
+intro:
+  title: "Playwright"
+  subtitle: "Reliable end-to-end testing"
+  seconds: 2.6
+  narrate: "Here's a quick tour of Playwright."
+
+scenes:
+  - narrate: "This is the Playwright home page."
+    goto: "/"
+    hold: 1.2
+
+  - narrate: "Everything starts from Get started."
+    highlight: "text=Get started"
+    hold: 1.4
+
+  - narrate: "Let's open the docs."
+    click: "text=Get started"
+
+  - narrate: "Installation is a single command."
+    spotlight: "text=Installation"
+    wait_for: "text=Installation"
+    hold: 2.0
+
+  - chapter: { title: "Writing tests", subtitle: "Locators & assertions" }
+    narrate: "Now let's look at writing tests."
+    click: "text=Writing tests"
+
+  - narrate: "Playwright's test runner is built for speed and reliability."
+    scroll: { by: 700 }
+    callout: { text: "Fast & reliable", at: "h1" }
+    hold: 2.4
+
+outro:
+  title: "That's Playwright"
+  subtitle: "playwright.dev"
+  seconds: 2.6
+  cta: "Read the docs →"
+  narrate: "And that's the whirlwind tour. Thanks for watching."

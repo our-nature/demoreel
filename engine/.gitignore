@@ -1,0 +1,13 @@
+# build + cache artifacts
+.demoreel/
+__pycache__/
+*.pyc
+.venv/
+uv.lock
+
+# rendered output (large binaries — don't commit)
+*.mp4
+*.webm
+*.srt
+*.aiff
+*.wav
