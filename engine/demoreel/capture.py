@@ -141,9 +141,17 @@ def capture(
             zoom = _resolve_zoom(scene, cam_cfg, rect, page_w, page_h)
             if zoom and rect is not None:
                 cx, cy = rect["cx"], rect["cy"]
-                cam.add(max(t_action_done - 0.15, cam.last().t), cur.z, cur.cx, cur.cy)
-                cam.add(t_action_done + cam_cfg.settle, zoom, cx, cy)
-                cur = _Cam(zoom, cx, cy)
+                # Skip a near-identical move: if we're already framing roughly here at a
+                # similar zoom, don't add a tiny pan/zoom that just reads as drift.
+                near = (
+                    abs(zoom - cur.z) < 0.12
+                    and abs(cx - cur.cx) < 0.05 * page_w
+                    and abs(cy - cur.cy) < 0.05 * page_h
+                )
+                if not near:
+                    cam.add(max(t_action_done - 0.15, cam.last().t), cur.z, cur.cx, cur.cy)
+                    cam.add(t_action_done + cam_cfg.settle, zoom, cx, cy)
+                    cur = _Cam(zoom, cx, cy)
             elif cur.z != 1.0:
                 cam.add(t_start + 0.05, cur.z, cur.cx, cur.cy)
                 cam.add(t_start + 0.05 + cam_cfg.settle, 1.0, cur.cx, cur.cy)
@@ -347,6 +355,7 @@ def _focus_rect(page, selector: str | None, w, h) -> dict | None:
     try:
         loc = page.locator(selector).first
         loc.wait_for(state="visible", timeout=8000)
+        loc.scroll_into_view_if_needed(timeout=4000)  # below-fold targets → real in-view rect
         box = loc.bounding_box()
     except Exception:  # noqa: BLE001
         return None

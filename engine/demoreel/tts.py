@@ -32,6 +32,18 @@ class TTSError(RuntimeError):
     pass
 
 
+def _normalize_text(text: str) -> str:
+    """Collapse whitespace and ensure terminal punctuation.
+
+    Clean, sentence-terminated text gives every TTS engine better prosody and avoids the
+    dropped/garbled words you get from stray whitespace or run-on input.
+    """
+    text = " ".join(text.split())
+    if text and text[-1] not in ".!?:;,—-":
+        text += "."
+    return text
+
+
 def wav_duration(path: str | Path) -> float:
     with wave.open(str(path), "rb") as w:
         frames = w.getnframes()
@@ -43,7 +55,7 @@ def synthesize(text: str, out_wav: str | Path, voice: VoiceConfig) -> float:
     """Render ``text`` to ``out_wav`` and return its duration in seconds."""
     out_wav = Path(out_wav)
     out_wav.parent.mkdir(parents=True, exist_ok=True)
-    text = (text or "").strip()
+    text = _normalize_text(text or "")
     if not text:
         _write_silence(out_wav, 0.3)
         return wav_duration(out_wav)

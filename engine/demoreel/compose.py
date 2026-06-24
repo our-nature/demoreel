@@ -84,7 +84,7 @@ def compose(
             cue_end = min(st.audio_start + st.narration_duration, duration)
             wt = word_timings.get(st.index)
             if cc.style == "karaoke" and wt:
-                _karaoke(overlays, srt_cues, wt, st.audio_start, OW, OH, margin, font,
+                _karaoke(overlays, srt_cues, wt, text, st.audio_start, OW, OH, margin, font,
                          tcol, bcol, accent, cc.max_chars, duration)
             else:
                 _static_caps(overlays, srt_cues, text, st.audio_start, cue_end, build_dir,
@@ -162,8 +162,13 @@ def _static_caps(overlays, srt_cues, text, start, end, build_dir, idx, OW, OH, m
         srt_cues.append(cue)
 
 
-def _karaoke(overlays, srt_cues, word_timings, audio_start, OW, OH, margin, font,
+def _karaoke(overlays, srt_cues, word_timings, script, audio_start, OW, OH, margin, font,
              tcol, bcol, accent, max_chars, duration) -> None:
+    # Use Whisper's timings, but display the known script words when the counts line up,
+    # so captions never show mis-transcribed/dropped words.
+    script_words = script.split()
+    if len(script_words) == len(word_timings):
+        word_timings = [(sw, ws, we) for sw, (_w, ws, we) in zip(script_words, word_timings)]
     words = [(w, audio_start + ws, audio_start + we) for (w, ws, we) in word_timings]
     for line in _group_words(words, max_chars):
         ls, le = line[0][1], min(line[-1][2], duration)

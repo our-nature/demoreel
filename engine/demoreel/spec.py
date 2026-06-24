@@ -176,9 +176,9 @@ class CameraConfig(BaseModel):
     auto_zoom: bool = True
     zoom: float = 1.6
     easing: Literal["smoothstep", "cubic", "spring"] = "spring"
-    overshoot: float = 0.06
-    idle_drift: bool = True
-    drift_amount: float = 0.010
+    overshoot: float = 0.0  # no overshoot by default — overshoot reads as an unwanted shift
+    idle_drift: bool = False  # off by default — the continuous wander reads as drift
+    drift_amount: float = 0.006
     framing: Literal["element", "point"] = "element"
     settle: float = 0.38
 

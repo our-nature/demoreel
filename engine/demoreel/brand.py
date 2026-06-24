@@ -171,15 +171,18 @@ def _corner_pos(position: str, w, h, lw, lh, margin):
 
 
 def _centered(d, text, font, w, y, fill) -> None:
-    box = d.textbbox((0, 0), text, font=font)
-    d.text(((w - (box[2] - box[0])) // 2, y), text, font=font, fill=fill)
+    # y = top of the text; anchor "ma" centers horizontally and avoids bbox-offset drift.
+    d.text((w // 2, y), text, font=font, fill=fill, anchor="ma")
 
 
 def _pill(d, text, font, w, y, accent) -> None:
+    # Filled, contrast-aware CTA pill with the label optically centered.
     box = d.textbbox((0, 0), text, font=font)
     tw, th = box[2] - box[0], box[3] - box[1]
-    pad = int(th * 0.7)
-    x0 = (w - tw) // 2 - pad
-    d.rounded_rectangle([x0, y - pad // 2, x0 + tw + 2 * pad, y + th + pad], radius=th,
-                        outline=(*accent, 255), width=2)
-    d.text(((w - tw) // 2, y), text, font=font, fill=(*accent, 255))
+    pad_x, pad_y = int(th * 1.15), int(th * 0.62)
+    pill_w, pill_h = tw + 2 * pad_x, th + 2 * pad_y
+    x0 = (w - pill_w) // 2
+    d.rounded_rectangle([x0, y, x0 + pill_w, y + pill_h], radius=pill_h // 2, fill=(*accent, 255))
+    lum = 0.299 * accent[0] + 0.587 * accent[1] + 0.114 * accent[2]
+    tcol = (12, 12, 18) if lum > 150 else (255, 255, 255)
+    d.text((w // 2, y + pill_h // 2), text, font=font, fill=tcol, anchor="mm")

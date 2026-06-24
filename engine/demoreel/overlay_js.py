@@ -238,20 +238,26 @@ OVERLAY_JS = r"""
   }
   function chapter(title, sub) {
     clearChapter();
+    // Opaque overlay so the page never bleeds through, and a gap-spaced flex card so the
+    // bar / title / subtitle can never collide regardless of length.
     const wrap = document.createElement('div');
     Object.assign(wrap.style, {
-      position: 'fixed', inset: '0', display: 'flex', flexDirection: 'column',
-      alignItems: 'center', justifyContent: 'center', pointerEvents: 'none',
-      zIndex: '2147483646', background: 'rgba(8,8,14,.55)', backdropFilter: 'blur(3px)',
-      opacity: '0', transition: 'opacity .4s ease',
+      position: 'fixed', inset: '0', display: 'flex', alignItems: 'center',
+      justifyContent: 'center', pointerEvents: 'none', zIndex: '2147483646',
+      background: 'rgba(7,7,12,1)', opacity: '0', transition: 'opacity .4s ease',
     });
-    wrap.innerHTML =
-      '<div style="width:64px;height:5px;border-radius:3px;background:rgba(' + NS.cfg.accent +
-      ',1);margin-bottom:20px"></div>' +
-      '<div style="font:700 52px -apple-system,system-ui,sans-serif;color:#f2f2f8">' +
+    const card = document.createElement('div');
+    Object.assign(card.style, {
+      display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '22px',
+      textAlign: 'center', maxWidth: '78%', padding: '0 6%',
+    });
+    card.innerHTML =
+      '<div style="width:60px;height:5px;border-radius:3px;background:rgba(' + NS.cfg.accent + ',1)"></div>' +
+      '<div style="font:700 56px/1.12 -apple-system,system-ui,sans-serif;color:#f3f3f8;margin:0">' +
       (title || '') + '</div>' +
-      (sub ? '<div style="font:400 24px -apple-system,system-ui,sans-serif;color:#aab;margin-top:10px">' +
+      (sub ? '<div style="font:400 26px/1.35 -apple-system,system-ui,sans-serif;color:#a9a9be;margin:0">' +
         sub + '</div>' : '');
+    wrap.appendChild(card);
     root().appendChild(wrap); NS.chapterEl = wrap;
     requestAnimationFrame(() => { wrap.style.opacity = '1'; });
   }
