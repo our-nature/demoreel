@@ -22,7 +22,7 @@ classifiers = [
 dependencies = [
     "pydantic>=2.6",
     "pyyaml>=6.0",
-    "playwright>=1.44",
+    "playwright>=1.61.0",
     "moviepy>=2.1.1",
     "numpy>=1.26",
     "opencv-python-headless>=4.9",
@@ -42,13 +42,13 @@ piper = ["piper-tts>=1.2"]
 kokoro = ["kokoro-onnx>=0.3.0"]
 # OpenAI cloud TTS (and OpenAI-compatible endpoints). ElevenLabs needs only an
 # ELEVENLABS_API_KEY — no package — so it is not listed here.
-cloud = ["openai>=1.30"]
+cloud = ["openai>=2.44.0"]
 # Word-level alignment for karaoke captions.
 align = ["faster-whisper>=1.0"]
 all = [
     "piper-tts>=1.2",
     "kokoro-onnx>=0.3.0",
-    "openai>=1.30",
+    "openai>=2.44.0",
     "faster-whisper>=1.0",
 ]
 
@@ -74,8 +74,8 @@ include = ["demoreel", "examples", "README.md", "LICENSE"]
 dev = [
     "pytest>=8",
     "pytest-cov>=5",
-    "ruff>=0.6",
-    "pyright>=1.1.380",
+    "ruff>=0.15.20",
+    "pyright>=1.1.411",
 ]
 
 [tool.ruff]
