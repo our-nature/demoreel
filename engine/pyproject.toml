@@ -22,10 +22,10 @@ classifiers = [
 dependencies = [
     "pydantic>=2.6",
     "pyyaml>=6.0",
-    "playwright>=1.44",
+    "playwright>=1.61.0",
     "moviepy>=2.1.1",
     "numpy>=1.26",
-    "opencv-python-headless>=4.9",
+    "opencv-python-headless>=5.0.0.93",
     "Pillow>=10.2",
     "imageio-ffmpeg>=0.5",
 ]
@@ -37,18 +37,18 @@ Issues = "https://github.com/our-nature/demoreel/issues"
 
 [project.optional-dependencies]
 # Local, fully open-source neural TTS (recommended default voice engine).
-piper = ["piper-tts>=1.2"]
+piper = ["piper-tts>=1.5.0"]
 # Higher-quality local OSS neural TTS (Apache-2.0). No API key, runs offline.
 kokoro = ["kokoro-onnx>=0.3.0"]
 # OpenAI cloud TTS (and OpenAI-compatible endpoints). ElevenLabs needs only an
 # ELEVENLABS_API_KEY — no package — so it is not listed here.
-cloud = ["openai>=1.30"]
+cloud = ["openai>=2.46.0"]
 # Word-level alignment for karaoke captions.
 align = ["faster-whisper>=1.0"]
 all = [
-    "piper-tts>=1.2",
+    "piper-tts>=1.5.0",
     "kokoro-onnx>=0.3.0",
-    "openai>=1.30",
+    "openai>=2.46.0",
     "faster-whisper>=1.0",
 ]
 
@@ -74,8 +74,8 @@ include = ["demoreel", "examples", "README.md", "LICENSE"]
 dev = [
     "pytest>=8",
     "pytest-cov>=5",
-    "ruff>=0.6",
-    "pyright>=1.1.380",
+    "ruff>=0.15.22",
+    "pyright>=1.1.411",
 ]
 
 [tool.ruff]
