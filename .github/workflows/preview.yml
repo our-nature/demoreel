@@ -24,10 +24,10 @@ jobs:
     name: preview render (browser)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           submodules: false
-      - uses: astral-sh/setup-uv@v5
+      - uses: astral-sh/setup-uv@v7
         with:
           enable-cache: true
       - run: uv sync --frozen
@@ -52,7 +52,7 @@ jobs:
           fi
       - name: upload preview artifacts
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: demo-preview
           path: |
@@ -63,7 +63,7 @@ jobs:
           if-no-files-found: warn
       - name: sticky preview comment
         if: always()
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             // Only same-repo PRs get a writable token; fork PRs are read-only, so the
